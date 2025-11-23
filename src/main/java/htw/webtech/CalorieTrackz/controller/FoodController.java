@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Lebensmittel werden umgewandelt in JSON damit die Website mit den Daten etwas anfangen kann
  */
+@CrossOrigin(origins = "https://webtechprojektfe-calorietrackz.onrender.com")
 @RestController
 @RequestMapping("/api")
 public class FoodController {
