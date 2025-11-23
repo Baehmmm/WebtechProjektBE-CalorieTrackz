@@ -1,7 +1,6 @@
 package htw.webtech.CalorieTrackz;
-
-import htw.webtech.CalorieTrackz.Table;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "foods")
