@@ -20,46 +20,27 @@ public class FoodEntry {
     @Column(name = "calories", nullable = false)
     private int calories;
 
+    // NEU: Makronährstoffe (Angaben pro 100g sind üblich für APIs,
+    // aber Sie speichern hier den Wert des Eintrags)
+    @Column(name = "protein")
+    private double protein;
 
-    public FoodEntry() {
-    }
+    @Column(name = "carbohydrates")
+    private double carbohydrates;
 
+    @Column(name = "fat")
+    private double fat;
 
-    public FoodEntry(long id, String name, int calories) {
-        this.id = id;
+    // ... NEUE GETTER UND SETTER FÜR protein, carbohydrates, fat
+    // ... Passen Sie auch die Konstruktoren und toString() an.
+
+    // Beispiel für einen neuen Konstruktor:
+    public FoodEntry(String name, int calories, double protein, double carbohydrates, double fat) {
         this.name = name;
         this.calories = calories;
-    }
-
-
-    public FoodEntry(String name, int calories) {
-        this.name = name;
-        this.calories = calories;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
+        this.protein = protein;
+        this.carbohydrates = carbohydrates;
+        this.fat = fat;
     }
 
     @Override
