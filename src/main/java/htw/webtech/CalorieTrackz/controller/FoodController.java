@@ -21,7 +21,7 @@ public class FoodController {
     @Autowired
     private FoodEntryService service;
 
-    @Autowired // NEU
+    @Autowired
     private OpenFoodFactsService offService;
 
 
