@@ -53,4 +53,9 @@ public class FoodController {
     public Mono<List<OpenFoodFactsProduct>> searchFood(@RequestParam String query) {
         return offService.searchProducts(query);
     }
+
+    @GetMapping("/search/details/{code}")
+    public Mono<OpenFoodFactsProduct> getFoodDetails(@PathVariable String code) {
+        return offService.getProductDetails(code);
+    }
 }
