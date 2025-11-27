@@ -12,7 +12,10 @@ import java.util.List;
 @Service
 public class OpenFoodFactsService {
 
-    private static final String SEARCH_URL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms={query}&json=1";
+    private static final String SEARCH_URL = "https://world.openfoodfacts.org/cgi/search.pl?search_terms={query}&json=1&fields=code,product_name&page_size=10";
+
+    private static final String DETAIL_URL = "https://world.openfoodfacts.org/api/v2/product/{code}?fields=product_name,nutriments";
+
     private final WebClient webClient = WebClient.create();
 
     /**
@@ -24,14 +27,29 @@ public class OpenFoodFactsService {
         return webClient.get()
                 .uri(SEARCH_URL, query)
                 .retrieve()
-                // Mappe die JSON-Antwort auf unser DTO
                 .bodyToMono(OpenFoodFactsSearchResponse.class)
                 .map(response -> response.getProducts())
                 .defaultIfEmpty(Collections.emptyList())
                 .onErrorResume(e -> {
-                    // Fehlerbehandlung: Bei Fehlern leere Liste zurückgeben
                     System.err.println("Fehler bei O.F.F. Suche: " + e.getMessage());
                     return Mono.just(Collections.emptyList());
+                });
+    }
+
+    /**
+     * Ruft die Details eines Produkts anhand seines eindeutigen Codes ab.
+     * @param code Der Produktcode (z.B. Barcode).
+     * @return Ein einzelnes Produkt mit vollständigen Details.
+     */
+    // NEUE METHODE
+    public Mono<OpenFoodFactsProduct> getProductDetails(String code) {
+        return webClient.get()
+                .uri(DETAIL_URL, code)
+                .retrieve()
+                .bodyToMono(OpenFoodFactsProduct.class)
+                .onErrorResume(e -> {
+                    System.err.println("Fehler bei O.F.F. Detailabruf für Code " + code + ": " + e.getMessage());
+                    return Mono.empty();
                 });
     }
 }
