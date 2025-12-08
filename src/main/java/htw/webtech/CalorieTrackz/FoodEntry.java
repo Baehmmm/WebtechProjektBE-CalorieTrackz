@@ -89,6 +89,7 @@ public class FoodEntry {
     @Column(name = "fat")
     private double fat;
 
+
     @Override
     public String toString() {
         return "FoodEntry{" +

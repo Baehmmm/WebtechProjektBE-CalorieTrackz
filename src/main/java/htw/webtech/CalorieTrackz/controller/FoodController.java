@@ -2,11 +2,10 @@ package htw.webtech.CalorieTrackz.controller;
 
 import htw.webtech.CalorieTrackz.FoodEntry;
 import htw.webtech.CalorieTrackz.service.FoodEntryService;
-import htw.webtech.CalorieTrackz.service.OpenFoodFactsService;
-import htw.webtech.CalorieTrackz.api.OpenFoodFactsProduct;
+import htw.webtech.CalorieTrackz.service.FatSecretService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
+
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class FoodController {
     private FoodEntryService service;
 
     @Autowired
-    private OpenFoodFactsService offService;
+    private FatSecretService fatSecretService;
 
 
     @GetMapping("/foods")
@@ -50,12 +49,8 @@ public class FoodController {
     }
 
     @GetMapping("/search")
-    public Mono<List<OpenFoodFactsProduct>> searchFood(@RequestParam String query) {
-        return offService.searchProducts(query);
+    public List<FoodEntry> searchFood(@RequestParam String query) {
+        return fatSecretService.searchFood(query);
     }
 
-    @GetMapping("/search/details/{code}")
-    public Mono<OpenFoodFactsProduct> getFoodDetails(@PathVariable String code) {
-        return offService.getProductDetails(code);
-    }
 }
