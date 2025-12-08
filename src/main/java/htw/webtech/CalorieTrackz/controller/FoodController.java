@@ -2,7 +2,7 @@ package htw.webtech.CalorieTrackz.controller;
 
 import htw.webtech.CalorieTrackz.FoodEntry;
 import htw.webtech.CalorieTrackz.service.FoodEntryService;
-import htw.webtech.CalorieTrackz.service.FatSecretService;
+import htw.webtech.CalorieTrackz.service.CalorieNinjasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +21,7 @@ public class FoodController {
     private FoodEntryService service;
 
     @Autowired
-    private FatSecretService fatSecretService;
-
+    private CalorieNinjasService apiService;
 
     @GetMapping("/foods")
     public Iterable<FoodEntry> getAllFoodEntries() {
@@ -50,7 +49,7 @@ public class FoodController {
 
     @GetMapping("/search")
     public List<FoodEntry> searchFood(@RequestParam String query) {
-        return fatSecretService.searchFood(query);
+        return apiService.searchFood(query);
     }
 
 }
