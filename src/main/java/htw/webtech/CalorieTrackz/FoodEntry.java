@@ -27,11 +27,11 @@ public class FoodEntry {
         this.name = name;
     }
 
-    public int getCalories() {
+    public double getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 
@@ -62,7 +62,7 @@ public class FoodEntry {
     public FoodEntry() {
     }
 
-    public FoodEntry(String name, int calories, double protein, double carbohydrates, double fat) {
+    public FoodEntry(String name, double calories, double protein, double carbohydrates, double fat) {
         this.name = name;
         this.calories = calories;
         this.protein = protein;
@@ -78,7 +78,7 @@ public class FoodEntry {
     private String name;
 
     @Column(name = "calories", nullable = false)
-    private int calories;
+    private double calories;
 
     @Column(name = "protein")
     private double protein;
