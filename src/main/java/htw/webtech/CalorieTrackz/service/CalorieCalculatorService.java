@@ -24,19 +24,18 @@ public class CalorieCalculatorService {
         double multiplier = getActivityMultiplier(user.getActivityLevel());
         double maintenanceCalories = bmr * multiplier;
 
-        if (user.getGoal() == null) return maintenanceCalories;
+        if (user.getGoal() == null) return Math.round(maintenanceCalories);
 
-        double result;
-
-        if (user.getGoal() == Goal.BUILD_MUSCLE) {
-            result = maintenanceCalories + 400;
-        } else if (user.getGoal() == Goal.LOSE_WEIGHT) {
-            result = maintenanceCalories - 400;
-        } else {
-            result = maintenanceCalories;
+        switch (user.getGoal()) {
+            case BUILD_MUSCLE:
+                return Math.round(maintenanceCalories + 400); // +400
+            case LOSE_WEIGHT:
+                return Math.round(maintenanceCalories - 400); // -400
+            case MAINTAIN_WEIGHT:
+                return Math.round(maintenanceCalories);       // +/- 0
+            default:
+                return Math.round(maintenanceCalories);
         }
-
-        return Math.round(result);
 
     }
 
