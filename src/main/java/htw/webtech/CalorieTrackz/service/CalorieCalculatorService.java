@@ -22,17 +22,22 @@ public class CalorieCalculatorService {
     public double calculateDailyCalories(UserEntity user) {
         double bmr = calculateBMR(user);
         double multiplier = getActivityMultiplier(user.getActivityLevel());
-
         double maintenanceCalories = bmr * multiplier;
 
-        // 3. Ziel-Anpassung
+        if (user.getGoal() == null) return maintenanceCalories;
+
+        double result;
+
         if (user.getGoal() == Goal.BUILD_MUSCLE) {
-            return maintenanceCalories + 400; // Überschuss für Aufbau
+            result = maintenanceCalories + 400;
         } else if (user.getGoal() == Goal.LOSE_WEIGHT) {
-            return maintenanceCalories - 400; // Defizit für Abnehmen
+            result = maintenanceCalories - 400;
         } else {
-            return maintenanceCalories;
+            result = maintenanceCalories;
         }
+
+        return Math.round(result);
+
     }
 
     private double getActivityMultiplier(ActivityLevel level) {
