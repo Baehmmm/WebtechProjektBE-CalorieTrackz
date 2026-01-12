@@ -38,4 +38,18 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
         return calculatorService.calculateDailyCalories(user);
     }
+
+    public UserEntity updateUserProfile(String username, UserEntity newUserData) {
+        UserEntity existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
+
+        existingUser.setWeight(newUserData.getWeight());
+        existingUser.setHeight(newUserData.getHeight());
+        existingUser.setAge(newUserData.getAge());
+        existingUser.setGender(newUserData.getGender());
+        existingUser.setActivityLevel(newUserData.getActivityLevel());
+        existingUser.setGoal(newUserData.getGoal());
+
+        return userRepository.save(existingUser);
+    }
 }

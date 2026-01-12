@@ -21,7 +21,6 @@ public class UserController {
     private final CalorieCalculatorService calorieCalculatorService;
     private final UserRepository userRepository;
 
-    // Constructor Injection für alle Services
     public UserController(UserService userService,
                           CalorieCalculatorService calorieCalculatorService,
                           UserRepository userRepository) {
@@ -30,7 +29,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    // --- HILFSMETHODE: Wer ist eingeloggt? ---
     private UserEntity getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByUsername(auth.getName())
@@ -48,13 +46,17 @@ public class UserController {
 
         double calculatedCalories = calorieCalculatorService.calculateDailyCalories(user);
 
-        UserProfileResponse response = new UserProfileResponse(
-                user.getUsername(),
-                user.getGoal(),
-                user.getWeight(),
-                calculatedCalories
-        );
+        return ResponseEntity.ok(new UserProfileResponse(user, calculatedCalories));
+    }
 
-        return ResponseEntity.ok(response);
+    @PutMapping("/me")
+    public ResponseEntity<UserProfileResponse> updateUserProfile(@RequestBody UserEntity userUpdates) {
+        UserEntity currentUser = getCurrentUser();
+
+        UserEntity updatedUser = userService.updateUserProfile(currentUser.getUsername(), userUpdates);
+
+        double newCalories = calorieCalculatorService.calculateDailyCalories(updatedUser);
+
+        return ResponseEntity.ok(new UserProfileResponse(updatedUser, newCalories));
     }
 }
