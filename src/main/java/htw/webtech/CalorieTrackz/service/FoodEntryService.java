@@ -1,6 +1,7 @@
 package htw.webtech.CalorieTrackz.service;
 
 import htw.webtech.CalorieTrackz.FoodEntry;
+import htw.webtech.CalorieTrackz.UserEntity;
 import htw.webtech.CalorieTrackz.repository.FoodEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,10 @@ public class FoodEntryService {
     private FoodEntryRepository repo;
 
 
-    public FoodEntry saveFoodEntry(FoodEntry foodEntry) {
+    public FoodEntry saveFoodEntry(FoodEntry foodEntry, UserEntity user) {
+        foodEntry.setUser(user);
         return repo.save(foodEntry);
     }
-
-
 
     public FoodEntry getFoodEntry(Long id) {
         return repo.findById(id).orElseThrow(() ->
@@ -24,8 +24,8 @@ public class FoodEntryService {
     }
 
 
-    public Iterable<FoodEntry> getAllFoodEntries() {
-        return repo.findAll();
+    public Iterable<FoodEntry> getAllFoodEntries(UserEntity user) {
+        return repo.findAllByUser(user);
     }
 
 

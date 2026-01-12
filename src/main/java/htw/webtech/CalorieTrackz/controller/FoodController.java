@@ -3,7 +3,13 @@ package htw.webtech.CalorieTrackz.controller;
 import htw.webtech.CalorieTrackz.FoodEntry;
 import htw.webtech.CalorieTrackz.service.FoodEntryService;
 import htw.webtech.CalorieTrackz.service.CalorieNinjasService;
+import htw.webtech.CalorieTrackz.UserEntity;
+import htw.webtech.CalorieTrackz.repository.UserRepository;
+import htw.webtech.CalorieTrackz.service.FoodEntryService;
+import htw.webtech.CalorieTrackz.service.CalorieNinjasService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,10 +29,20 @@ public class FoodController {
     @Autowired
     private CalorieNinjasService apiService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private UserEntity getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
+    }
+
     @GetMapping("/foods")
     public Iterable<FoodEntry> getAllFoodEntries() {
-
-        return service.getAllFoodEntries();
+        UserEntity currentUser = getCurrentUser();
+        return service.getAllFoodEntries(currentUser);
     }
 
     @GetMapping("/foods/{id}")
@@ -37,9 +53,9 @@ public class FoodController {
 
     @PostMapping("/foods")
     public FoodEntry createFoodEntry(@RequestBody FoodEntry foodEntry) {
-        return service.saveFoodEntry(foodEntry);
+        UserEntity currentUser = getCurrentUser();
+        return service.saveFoodEntry(foodEntry, currentUser);
     }
-
 
     @DeleteMapping("/foods/{id}")
     public void deleteFoodEntry(@PathVariable String id) {
