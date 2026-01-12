@@ -12,7 +12,7 @@ public class UserService {
     private final CalorieCalculatorService calculatorService;
     private final PasswordEncoder passwordEncoder;
 
-    // Konstruktor erweitert
+    // Konstruktor
     public UserService(UserRepository userRepository,
                        CalorieCalculatorService calculatorService,
                        PasswordEncoder passwordEncoder) {
