@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.security.access.AccessDeniedException;
 
 @Service
 public class FoodEntryService {
 
     @Autowired
     private FoodEntryRepository repo;
+
+
 
 
     public FoodEntry saveFoodEntry(FoodEntry foodEntry, UserEntity user) {
@@ -31,8 +34,15 @@ public class FoodEntryService {
     }
 
 
-    public void deleteFoodEntry(Long id) {
-        repo.deleteById(id);
+    public void deleteFoodEntry(Long id, UserEntity currentUser) {
+        FoodEntry entry = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Eintrag nicht gefunden"));
+
+        if (!entry.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("Das ist nicht dein Eintrag!");
+        }
+
+        repo.delete(entry);
     }
 
     public List<FoodEntry> getTodaysEntries(UserEntity user) {

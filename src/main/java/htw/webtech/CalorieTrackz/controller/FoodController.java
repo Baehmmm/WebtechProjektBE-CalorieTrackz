@@ -66,7 +66,10 @@ public class FoodController {
     @DeleteMapping("/foods/{id}")
     public void deleteFoodEntry(@PathVariable String id) {
         Long foodId = Long.parseLong(id);
-        service.deleteFoodEntry(foodId);
+
+        UserEntity currentUser = getCurrentUser();
+
+        service.deleteFoodEntry(foodId, currentUser);
     }
 
     @GetMapping("/search")
