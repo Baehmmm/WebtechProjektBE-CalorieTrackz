@@ -19,7 +19,7 @@ public class Recipe {
     private String name;
 
     // Beziehung zum User: Ein Rezept gehört einem User
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private UserEntity user;
