@@ -4,9 +4,11 @@ import htw.webtech.CalorieTrackz.FoodEntry;
 import htw.webtech.CalorieTrackz.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
+import java.time.LocalDate;
 
 public interface FoodEntryRepository extends CrudRepository<FoodEntry, Long> {
 
     List<FoodEntry> findAllByUser(UserEntity user);
 
+    List<FoodEntry> findAllByUserAndDate(UserEntity user, LocalDate date);
 }

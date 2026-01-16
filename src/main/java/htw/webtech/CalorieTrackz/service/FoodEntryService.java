@@ -5,6 +5,8 @@ import htw.webtech.CalorieTrackz.UserEntity;
 import htw.webtech.CalorieTrackz.repository.FoodEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class FoodEntryService {
@@ -31,5 +33,9 @@ public class FoodEntryService {
 
     public void deleteFoodEntry(Long id) {
         repo.deleteById(id);
+    }
+
+    public List<FoodEntry> getTodaysEntries(UserEntity user) {
+        return repo.findAllByUserAndDate(user, LocalDate.now());
     }
 }

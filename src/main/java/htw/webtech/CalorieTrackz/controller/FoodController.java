@@ -1,8 +1,6 @@
 package htw.webtech.CalorieTrackz.controller;
 
 import htw.webtech.CalorieTrackz.FoodEntry;
-import htw.webtech.CalorieTrackz.service.FoodEntryService;
-import htw.webtech.CalorieTrackz.service.CalorieNinjasService;
 import htw.webtech.CalorieTrackz.UserEntity;
 import htw.webtech.CalorieTrackz.repository.UserRepository;
 import htw.webtech.CalorieTrackz.service.FoodEntryService;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -39,11 +36,20 @@ public class FoodController {
                 .orElseThrow(() -> new RuntimeException("User nicht gefunden"));
     }
 
+    // --- HIER IST DIE ÄNDERUNG ---
     @GetMapping("/foods")
-    public Iterable<FoodEntry> getAllFoodEntries() {
+    public Iterable<FoodEntry> getAllFoodEntries(@RequestParam(required = false) String mode) {
         UserEntity currentUser = getCurrentUser();
+
+        // Wenn ?mode=today in der URL steht, rufen wir die neue Service-Methode auf
+        if ("today".equals(mode)) {
+            return service.getTodaysEntries(currentUser);
+        }
+
+        // Sonst laden wir wie gewohnt alles
         return service.getAllFoodEntries(currentUser);
     }
+    // -----------------------------
 
     @GetMapping("/foods/{id}")
     public FoodEntry getFoodEntry(@PathVariable String id) {
@@ -67,5 +73,4 @@ public class FoodController {
     public List<FoodEntry> searchFood(@RequestParam String query) {
         return apiService.searchFood(query);
     }
-
 }
